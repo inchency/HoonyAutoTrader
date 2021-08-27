@@ -150,7 +150,7 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
                                                                                       datetime.datetime.now())
         write_path = os.path.join(use_access_key.BASE_DIR, "sell_log.txt")
         print(log_str)
-        with open(write_path, "wt") as wtf:
+        with open(write_path, "at") as wtf:
             wtf.write(log_str)
 
     except Exception as e:  # 예외 발생하면 전량 매도
@@ -164,5 +164,5 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
                                                                                             datetime.datetime.now())
         write_path = os.path.join(use_access_key.BASE_DIR, "sell_log.txt")
         print(log_str)
-        with open(write_path, "wt") as wtf:
+        with open(write_path, "at") as wtf:
             wtf.write(log_str)
