@@ -7,10 +7,14 @@ import time
 # total_count * sleep_sec 시간 동안 기다려야함
 # ex total_count = 10, sleep_sec = 3 이라면 총 30초동안 10번의 거래 가격을 보게 됨
 def detect_brust_krw_coin(total_count, sleep_sec):
+    print("---detecting_burst_krw_coin---")
     all_tickers = read_coin_name.get_tickers()
     all_tickers_krw_price = dict()
     for i in range(0, total_count, 1):
         temp_dic = about_price.CurrentPrice.get_coins_current_price(all_tickers)
+        while temp_dic is None:
+            temp_dic = about_price.CurrentPrice.get_coins_current_price(all_tickers)
+            time.sleep(1)
         new_dic = dict()
         # BTC는 제거하고 KRW로 살수 있는 코인만 남기기
         for ticker, price in temp_dic.items():

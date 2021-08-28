@@ -61,6 +61,7 @@ if __name__ == '__main__':
     upbit = pyupbit.Upbit(access_key, secret_key)
     while True:
         try:
+            print("\n탐색 시작! 현재시각 : {}".format(datetime.datetime.now()))
             # 30초 동안 1% 이상 오른 코인 검색
             detect_burst_coin_dict, detect_burst_coin_percent = detect_burst_coin.detect_brust_krw_coin(6, 5)
             # 현재 갖고 있는 코인 제외하기 혹은 제외하고 싶은 코인 추가하기
@@ -70,6 +71,8 @@ if __name__ == '__main__':
                 detect_burst_coin_dict.pop("KRW-DOGE")
             if "KRW-TRX" in detect_burst_coin_dict:
                 detect_burst_coin_dict.pop("KRW-TRX")
+            if "KRW-HIVE" in detect_burst_coin_dict:
+                detect_burst_coin_dict.pop("KRW-HIVE")
             print(detect_burst_coin_dict)
             if (len(detect_burst_coin_dict) >= 1):
                 print("급등주 발견!! 현재시각 : \n", datetime.datetime.now())
