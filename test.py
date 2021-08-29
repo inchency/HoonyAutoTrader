@@ -64,6 +64,7 @@ if __name__ == '__main__':
             print("\n탐색 시작! 현재시각 : {}".format(datetime.datetime.now()))
             # 30초 동안 1% 이상 오른 코인 검색
             detect_burst_coin_dict, detect_burst_coin_percent = detect_burst_coin.detect_brust_krw_coin(6, 5)
+            print("---finish detecting_burst_krw_coin--- 현재시각 : {}".format(datetime.datetime.now()))
             # 현재 갖고 있는 코인 제외하기 혹은 제외하고 싶은 코인 추가하기
             if "KRW-XRP" in detect_burst_coin_dict:
                 detect_burst_coin_dict.pop("KRW-XRP")
@@ -77,6 +78,7 @@ if __name__ == '__main__':
             if (len(detect_burst_coin_dict) >= 1):
                 print("급등주 발견!! 현재시각 : \n", datetime.datetime.now())
                 print(detect_burst_coin_dict.keys())
+
                 print(detect_burst_coin_dict)
                 print(detect_burst_coin_percent)
                 # 가장 등락률이 높은 코인 찾기
@@ -84,25 +86,34 @@ if __name__ == '__main__':
                 buy_coin_ticker = sorted_dict[0][0]
                 try:
                     have_krw = upbit.get_balance("KRW")
-                    total_buy_cost = have_krw * 0.3  # 현재 보유 KRW에서 매수 비중을 결정한다. ex) 100만원 보유시 0.01 은 1만원
+                    total_buy_cost = have_krw * 0.95  # 현재 보유 KRW에서 매수 비중을 결정한다. ex) 100만원 보유시 0.01 은 1만원
                     krw_buy_coin = about_price.CurrentPrice(buy_coin_ticker)
                     krw_buy_coin_cur_price = krw_buy_coin.get_current_price()
-                    if total_buy_cost >= krw_buy_coin_cur_price: # 코인가격보다 내가 지정된 값의 매수하려는 돈이 더 많으면
+                    if total_buy_cost >= 5000: # 코인가격보다 내가 지정된 값의 매수하려는 돈이 더 많으면
                         upbit.buy_market_order(buy_coin_ticker, total_buy_cost)  # 매수 완료
                         print("내가 매수한 코인 이름 :", buy_coin_ticker)
                         # 매수한 코인 개수 구하기
                         buy_coin_cnt = upbit.get_balance(buy_coin_ticker)
+                        while buy_coin_cnt is None or buy_coin_cnt == 0.0 or buy_coin_cnt == 0:
+                            time.sleep(1)
+                            buy_coin_cnt = upbit.get_balance(buy_coin_ticker)
                         # 매수 평단가 구하기
                         buy_avg_price = upbit.get_avg_buy_price(buy_coin_ticker)
+                        while buy_avg_price is None or buy_avg_price == 0.0 or buy_avg_price == 0:
+                            time.sleep(1)
+                            buy_avg_price = upbit.get_avg_buy_price(buy_coin_ticker)
                         # 매수 총 금액 구하기
                         buy_total_cost = upbit.get_amount(buy_coin_ticker)
+                        while buy_total_cost is None or buy_total_cost == 0.0 or buy_total_cost == 0:
+                            time.sleep(1)
+                            buy_total_cost = upbit.get_amount(buy_coin_ticker)
                         selling_strategy.selling_strategy(upbit=upbit, ticker=buy_coin_ticker, volume=buy_coin_cnt,
                                                           avg_price=buy_avg_price, total_price=buy_total_cost,
                                                           sleep_sec=5)
                     else:
                         continue
                 except Exception as e:
-                    print(e)
+                    print("test.py에서 예외 : {}".format(e))
                     time.sleep(1)
             else:
                 print("현재 급등주가 발견되고 있지 않습니다.")

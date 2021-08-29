@@ -10,7 +10,7 @@ import selling_strategy
 
 (access_key, secret_key) = use_access_key.read_key(use_access_key.JSON_PATH)
 upbit = pyupbit.Upbit(access_key, secret_key)
-buy_coin_ticker = "KRW-HIVE"
+buy_coin_ticker = "KRW-IQ"
 print("내가 매수한 코인 이름 :", buy_coin_ticker)
 
 # 매수한 코인 개수 구하기

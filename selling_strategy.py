@@ -154,7 +154,7 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
                         continue
             else:  # 계속 존버
                 continue
-        log_str = "정상 매도 완료! 총 매수금액 : {}, 총 매도 금액 : {}, 수익률 : {}, 현재시간 : {}\n".format(total_price, total_sell_price,
+        log_str = "정상 매도 완료! 코인명 : {}, 총 매수금액 : {}, 총 매도 금액 : {}, 수익률 : {}, 현재시간 : {}\n".format(ticker, total_price, total_sell_price,
                                                                                       total_sell_price / total_price,
                                                                                       datetime.datetime.now())
         write_path = os.path.join(use_access_key.BASE_DIR, "sell_log.txt")
@@ -167,7 +167,7 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
         print(e)
         upbit.sell_market_order(ticker, volume)
         total_sell_price = total_sell_price + sell_coin.get_current_price() * volume
-        log_str = "중간에 에러나서 매도 종료! 총 매수금액 : {}, 총 매도 금액 : {}, 수익률 : {}, 현재시간 : {}\n".format(total_price,
+        log_str = "중간에 에러나서 매도 종료! 코인명 : {}, 총 매수금액 : {}, 총 매도 금액 : {}, 수익률 : {}, 현재시간 : {}\n".format(ticker, total_price,
                                                                                             total_sell_price,
                                                                                             total_sell_price / total_price,
                                                                                             datetime.datetime.now())
