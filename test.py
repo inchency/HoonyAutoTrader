@@ -97,7 +97,7 @@ if __name__ == '__main__':
                 curVolume = int(df.iloc[-1]["volume"])
                 print("현재 종가 / 2분전 종가 : {}".format(curClose / beforeClose))
                 print("현재 거래량 / 2분전 거래량 : {}".format(curVolume / beforeVolume))
-                if not ((beforeClose < curClose) and (beforeVolume * 1.3 <= curVolume)):
+                if not ((beforeClose * 1.02 <= curClose) and (beforeVolume * 1.1 <= curVolume)):
                     print("2분전 종가, 거래량의 조건에 충족되지 않아서 reset!!")
                     continue
 
