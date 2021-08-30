@@ -83,7 +83,7 @@ if __name__ == '__main__':
                 # 가장 등락률이 높은 코인 찾기
                 sorted_dict = sorted(detect_burst_coin_percent.items(), reverse=True)
                 buy_coin_ticker = sorted_dict[0][0]
-                
+
                 # 2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교
                 print("급등주가 맞는지 최종확인중\n2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교")
                 df = pyupbit.get_ohlcv(buy_coin_ticker, "minute1", 3)

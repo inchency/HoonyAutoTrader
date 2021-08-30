@@ -45,7 +45,7 @@ def detect_brust_krw_coin(total_count, sleep_sec):
         res_burst_coin_percent = dict() # 등락률
         # 처음시작 가격과 마지막 가격의 등락률이 1.5% 이상일 경우
         for ticker, price_list in candidate_burst_coin.items():
-            if (price_list[len(price_list) - 1] / price_list[0]) >= 1.015:
+            if (price_list[len(price_list) - 1] / price_list[0]) >= 1.0125:
                 res_burst_coin[ticker] = price_list
                 res_burst_coin_percent[ticker] = price_list[len(price_list) - 1] / price_list[0]
         return (res_burst_coin, res_burst_coin_percent)
