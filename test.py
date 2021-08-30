@@ -63,7 +63,7 @@ if __name__ == '__main__':
         try:
             print("\n탐색 시작! 현재시각 : {}".format(datetime.datetime.now()))
             # 30초 동안 1% 이상 오른 코인 검색
-            detect_burst_coin_dict, detect_burst_coin_percent = detect_burst_coin.detect_brust_krw_coin(6, 5)
+            detect_burst_coin_dict, detect_burst_coin_percent = detect_burst_coin.detect_brust_krw_coin(5, 2)
             print("---finish detecting_burst_krw_coin--- 현재시각 : {}".format(datetime.datetime.now()))
             # 현재 갖고 있는 코인 제외하기 혹은 제외하고 싶은 코인 추가하기
             if "KRW-XRP" in detect_burst_coin_dict:
@@ -78,12 +78,29 @@ if __name__ == '__main__':
             if (len(detect_burst_coin_dict) >= 1):
                 print("급등주 발견!! 현재시각 : \n", datetime.datetime.now())
                 print(detect_burst_coin_dict.keys())
-
                 print(detect_burst_coin_dict)
                 print(detect_burst_coin_percent)
                 # 가장 등락률이 높은 코인 찾기
                 sorted_dict = sorted(detect_burst_coin_percent.items(), reverse=True)
                 buy_coin_ticker = sorted_dict[0][0]
+                
+                # 2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교
+                print("급등주가 맞는지 최종확인중\n2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교")
+                df = pyupbit.get_ohlcv(buy_coin_ticker, "minute1", 3)
+                # 2분전 종가
+                beforeClose = int(df.iloc[0]["close"])
+                # 2분 전 거래량
+                beforeVolume = int(df.iloc[0]["volume"])
+                # 현재 종가
+                curClose = int(df.iloc[-1]["close"])
+                # 현재 거래량
+                curVolume = int(df.iloc[-1]["volume"])
+                print("현재 종가 / 2분전 종가 : {}".format(curClose / beforeClose))
+                print("현재 거래량 / 2분전 거래량 : {}".format(curVolume / beforeVolume))
+                if not ((beforeClose < curClose) and (beforeVolume * 1.3 <= curVolume)):
+                    print("2분전 종가, 거래량의 조건에 충족되지 않아서 reset!!")
+                    continue
+
                 try:
                     have_krw = upbit.get_balance("KRW")
                     total_buy_cost = have_krw * 0.95  # 현재 보유 KRW에서 매수 비중을 결정한다. ex) 100만원 보유시 0.01 은 1만원
