@@ -19,8 +19,8 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
             time.sleep(sleep_sec)
             sell_coin_current_price1 = sell_coin.get_current_price()
             yield_price1 = sell_coin_current_price1 / avg_price  # 수익률 구하기
-            print("({}) 코인\n판매 알고리즘 동작중 현재 수익률 0.99 초과 1.02 미만 현재 수익률 : {}\n 현재시각 : {}".format(ticker, yield_price1, datetime.datetime.now()))
-            if yield_price1 <= 0.99:  # -1퍼 이상이면 바로 손절하기
+            print("({}) 코인\n판매 알고리즘 동작중 현재 수익률 0.98 초과 1.02 미만 현재 수익률 : {}\n 현재시각 : {}".format(ticker, yield_price1, datetime.datetime.now()))
+            if yield_price1 <= 0.98:  # -2퍼 이상이면 바로 손절하기
                 upbit.sell_market_order(ticker, volume)
                 total_sell_price = total_sell_price + sell_coin.get_current_price() * volume
                 break

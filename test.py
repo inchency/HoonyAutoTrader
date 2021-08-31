@@ -85,8 +85,8 @@ if __name__ == '__main__':
                 buy_coin_ticker = sorted_dict[0][0]
 
                 # 2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교
-                print("급등주가 맞는지 최종확인중\n2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교")
-                df = pyupbit.get_ohlcv(buy_coin_ticker, "minute1", 3)
+                print("급등주가 맞는지 최종확인중\n1분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교")
+                df = pyupbit.get_ohlcv(buy_coin_ticker, "minute1", 2)
                 # 2분전 종가
                 beforeClose = int(df.iloc[0]["close"])
                 # 2분 전 거래량
@@ -95,10 +95,10 @@ if __name__ == '__main__':
                 curClose = int(df.iloc[-1]["close"])
                 # 현재 거래량
                 curVolume = int(df.iloc[-1]["volume"])
-                print("현재 종가 / 2분전 종가 : {}".format(curClose / beforeClose))
-                print("현재 거래량 / 2분전 거래량 : {}".format(curVolume / beforeVolume))
+                print("현재 종가 / 1분전 종가 : {}".format(curClose / beforeClose))
+                print("현재 거래량 / 1분전 거래량 : {}".format(curVolume / beforeVolume))
                 if not ((beforeClose * 1.02 <= curClose) and (beforeVolume * 1.1 <= curVolume)):
-                    print("2분전 종가, 거래량의 조건에 충족되지 않아서 reset!!")
+                    print("1분전 종가, 거래량의 조건에 충족되지 않아서 reset!!")
                     continue
 
                 try:
