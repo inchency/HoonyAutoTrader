@@ -72,7 +72,9 @@ if __name__ == '__main__':
             for having_ticker in buy_all_having_coin:
                 krw_or_btc = having_ticker["unit_currency"]
                 coin_ticker = having_ticker["currency"]
-                detect_burst_coin_dict.pop(having_ticker)
+                full_coin_ticker = krw_or_btc + "-" + coin_ticker
+                if full_coin_ticker in detect_burst_coin_dict:
+                    detect_burst_coin_dict.pop(full_coin_ticker)
             # if "KRW-HIVE" in detect_burst_coin_dict:
             #     detect_burst_coin_dict.pop("KRW-HIVE")
             print(detect_burst_coin_dict)
