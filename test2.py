@@ -20,6 +20,12 @@ buy_coin_cnt = upbit.get_balance(buy_coin_ticker)
 buy_avg_price = upbit.get_avg_buy_price(buy_coin_ticker)
 # 매수 총 금액 구하기
 buy_total_cost = upbit.get_amount(buy_coin_ticker)
+# 현재 가지고 있는 코인 정보
+buy_all_having_coin = upbit.get_balances()
+for having_ticker in buy_all_having_coin:
+    krw_or_btc = having_ticker["unit_currency"]
+    coin_ticker = having_ticker["currency"]
+    print(krw_or_btc + "-" + coin_ticker)
 
 df = pyupbit.get_ohlcv(buy_coin_ticker, "minute1", 3)
 print(df)

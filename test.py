@@ -66,14 +66,15 @@ if __name__ == '__main__':
             detect_burst_coin_dict, detect_burst_coin_percent = detect_burst_coin.detect_brust_krw_coin(5, 2)
             print("---finish detecting_burst_krw_coin--- 현재시각 : {}".format(datetime.datetime.now()))
             # 현재 갖고 있는 코인 제외하기 혹은 제외하고 싶은 코인 추가하기
-            if "KRW-XRP" in detect_burst_coin_dict:
-                detect_burst_coin_dict.pop("KRW-XRP")
-            if "KRW-DOGE" in detect_burst_coin_dict:
-                detect_burst_coin_dict.pop("KRW-DOGE")
-            if "KRW-TRX" in detect_burst_coin_dict:
-                detect_burst_coin_dict.pop("KRW-TRX")
-            if "KRW-HIVE" in detect_burst_coin_dict:
-                detect_burst_coin_dict.pop("KRW-HIVE")
+            buy_all_having_coin = upbit.get_balances()
+            while buy_all_having_coin is None or len(buy_all_having_coin) == 0:
+                buy_all_having_coin = upbit.get_balances()
+            for having_ticker in buy_all_having_coin:
+                krw_or_btc = having_ticker["unit_currency"]
+                coin_ticker = having_ticker["currency"]
+                detect_burst_coin_dict.pop(having_ticker)
+            # if "KRW-HIVE" in detect_burst_coin_dict:
+            #     detect_burst_coin_dict.pop("KRW-HIVE")
             print(detect_burst_coin_dict)
             if (len(detect_burst_coin_dict) >= 1):
                 print("급등주 발견!! 현재시각 : \n", datetime.datetime.now())
@@ -85,7 +86,7 @@ if __name__ == '__main__':
                 buy_coin_ticker = sorted_dict[0][0]
 
                 # 2분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교
-                print("급등주가 맞는지 최종확인중\n1분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교")
+                print("급등주가 맞는지 최종확인 중\n1분전의 거래량과 현재 거래량을 비교 && 2분전의 종가와 현재 종가를 비교")
                 df = pyupbit.get_ohlcv(buy_coin_ticker, "minute1", 2)
                 # 2분전 종가
                 beforeClose = int(df.iloc[0]["close"])
@@ -106,7 +107,7 @@ if __name__ == '__main__':
                     total_buy_cost = have_krw * 0.95  # 현재 보유 KRW에서 매수 비중을 결정한다. ex) 100만원 보유시 0.01 은 1만원
                     krw_buy_coin = about_price.CurrentPrice(buy_coin_ticker)
                     krw_buy_coin_cur_price = krw_buy_coin.get_current_price()
-                    if total_buy_cost >= 5000: # 코인가격보다 내가 지정된 값의 매수하려는 돈이 더 많으면
+                    if total_buy_cost >= 5000:  # 코인가격보다 내가 지정된 값의 매수하려는 돈이 더 많으면
                         upbit.buy_market_order(buy_coin_ticker, total_buy_cost)  # 매수 완료
                         print("내가 매수한 코인 이름 :", buy_coin_ticker)
                         # 매수한 코인 개수 구하기
