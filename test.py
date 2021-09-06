@@ -68,6 +68,7 @@ if __name__ == '__main__':
             # 현재 갖고 있는 코인 제외하기 혹은 제외하고 싶은 코인 추가하기
             buy_all_having_coin = upbit.get_balances()
             while buy_all_having_coin is None or len(buy_all_having_coin) == 0:
+                time.sleep(1)
                 buy_all_having_coin = upbit.get_balances()
             for having_ticker in buy_all_having_coin:
                 krw_or_btc = having_ticker["unit_currency"]
