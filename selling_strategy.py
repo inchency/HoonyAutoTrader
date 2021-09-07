@@ -24,18 +24,14 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
                                                                                                datetime.datetime.now()))
             if yield_price1 <= 0.98:  # -2퍼 이상이면 바로 손절하기
                 res = upbit.sell_market_order(ticker, volume)
-                if res is None:
-                    while res is None:
-                        time.sleep(1)
-                        res = upbit.sell_market_order(ticker, volume)
-                else:
-                    sell_coin_cur_price = sell_coin.get_current_price()
-                    total_sell_price = total_sell_price + sell_coin_cur_price * volume
-                    print("2프로 넘어서 익절!!")
-                    print(res)
-                    sell_full_log = sell_full_log + "현재가격 : {}, 수량 : {}, 총 {} 금액을 매도하였습니다.\n".format(sell_coin_cur_price,
-                                                                                                     volume,
-                                                                                                     total_sell_price)
+                while res is None:
+                    time.sleep(1)
+                    res = upbit.sell_market_order(ticker, volume)
+                sell_coin_cur_price = sell_coin.get_current_price()
+                total_sell_price = total_sell_price + sell_coin_cur_price * volume
+                sell_full_log = sell_full_log + "현재가격 : {}, 수량 : {}, 총 {} 금액을 매도하였습니다.\n".format(sell_coin_cur_price,
+                                                                                                 volume,
+                                                                                                 total_sell_price)
                 break
             elif yield_price1 >= 1.02:  # 수익률이 2프로가 넘어가면 시장가로 매수 수량의 1/3 익절
                 res = upbit.sell_market_order(ticker, volume / 3)
@@ -45,6 +41,8 @@ def selling_strategy(upbit, ticker, volume, avg_price, total_price, sleep_sec):
                 sell_coin_cur_price = sell_coin.get_current_price()
                 total_sell_price = total_sell_price + sell_coin_cur_price * (volume / 3)
                 cur_volume1 = upbit.get_balance(ticker)  # 남아있는 코인 수량 구하기
+                print(res)
+                print("2프로 수익나서 익절!!")
                 sell_full_log = sell_full_log + "현재가격 : {}, 수량 : {}, 총 {} 금액을 매도하였습니다.\n".format(sell_coin_cur_price,
                                                                                                  volume,
                                                                                                  total_sell_price)
