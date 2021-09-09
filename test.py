@@ -107,8 +107,8 @@ if __name__ == '__main__':
 
                 try:
                     have_krw = upbit.get_balance("KRW")
-                    # total_buy_cost = have_krw * 0.95  # 현재 보유 KRW에서 매수 비중을 결정한다. ex) 100만원 보유시 0.01 은 1만원
-                    total_buy_cost = 10000
+                    total_buy_cost = have_krw * 1.0  # 현재 보유 KRW에서 매수 비중을 결정한다. ex) 100만원 보유시 0.01 은 1만원
+                    # total_buy_cost = 10000
                     krw_buy_coin = about_price.CurrentPrice(buy_coin_ticker)
                     krw_buy_coin_cur_price = krw_buy_coin.get_current_price()
                     if total_buy_cost >= 5000:  # 코인가격보다 내가 지정된 값의 매수하려는 돈이 더 많으면
